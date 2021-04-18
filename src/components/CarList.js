@@ -65,5 +65,5 @@ function CarList() {
         </div>
     )
 }
-//new  comment
+
 export default CarList;
