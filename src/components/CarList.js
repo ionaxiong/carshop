@@ -18,13 +18,29 @@ function CarList() {
         .catch(err => console.error(err))
     }
 
+    const deleteCar = (url) => {
+        fetch(url, { method: 'DELETE'})
+        .then(response => {
+            if (response.ok)
+                fetchCars();
+            else
+                alert('Something went wrong!');
+        })
+        .catch(err => console.error(err))
+    }
+
     const columns = [
         {field: 'brand', sortable: true, filter: true},
         {field: 'model', sortable: true, filter: true},
         {field: 'color', sortable: true, filter: true},
         {field: 'fuel', sortable: true, filter: true},
-        {field: 'year', sortable: true, filter: true},
-        {field: 'price', sortable: true, filter: true},
+        {field: 'year', sortable: true, filter: true, width: 100},
+        {field: 'price', sortable: true, filter: true, width: 100},
+        {
+            headerName: '',
+            field: '_links.self.href',
+            cellRendererFramework: params => <button onClick={() => deleteCar(params.value)}>Delete</button>
+        }
     ];
 
     return (
