@@ -19,12 +19,12 @@ function CarList() {
     }
 
     const columns = [
-        {field: 'brand'},
-        {field: 'model'},
-        {field: 'color'},
-        {field: 'fuel'},
-        {field: 'year'},
-        {field: 'price'},
+        {field: 'brand', sortable: true, filter: true},
+        {field: 'model', sortable: true, filter: true},
+        {field: 'color', sortable: true, filter: true},
+        {field: 'fuel', sortable: true, filter: true},
+        {field: 'year', sortable: true, filter: true},
+        {field: 'price', sortable: true, filter: true},
     ];
 
     return (
@@ -32,6 +32,8 @@ function CarList() {
             <AgGridReact
                 rowData={cars}
                 columnDefs={columns}
+                pagination={true}
+                paginationPageSize={10}
             />
         </div>
     )
