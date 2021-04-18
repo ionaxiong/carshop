@@ -16,7 +16,7 @@ function CarList() {
     }, []);
 
     const fetchCars = () => {
-        fetch('http://carrestapi.herokuapp.com/cars')
+        fetch('https://carstockrest.herokuapp.com/cars')
         .then(response => response.json())
         .then(data => setCars(data._embedded.cars))
         .catch(err => console.error(err))
