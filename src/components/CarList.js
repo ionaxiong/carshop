@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
 
+import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
+
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 function CarList() {
     const [cars, setCars] = useState([]);
@@ -40,8 +44,12 @@ function CarList() {
         {field: 'price', sortable: true, filter: true, width: 100},
         {
             headerName: '',
+            width: 100,
             field: '_links.self.href',
-            cellRendererFramework: params => <button onClick={() => deleteCar(params.value)}>Delete</button>
+            cellRendererFramework: params => 
+            <IconButton color="secondary" onClick={() => deleteCar(params.value)}>
+                <DeleteIcon />
+            </IconButton>
         }
     ];
 
@@ -52,6 +60,7 @@ function CarList() {
                 columnDefs={columns}
                 pagination={true}
                 paginationPageSize={10}
+                suppressCellSelection={true}
             />
         </div>
     )
