@@ -19,14 +19,16 @@ function CarList() {
     }
 
     const deleteCar = (url) => {
-        fetch(url, { method: 'DELETE'})
-        .then(response => {
-            if (response.ok)
-                fetchCars();
-            else
-                alert('Something went wrong!');
-        })
-        .catch(err => console.error(err))
+        if (window.confirm('Are you sure?')) {
+            fetch(url, { method: 'DELETE'})
+            .then(response => {
+                if (response.ok)
+                    fetchCars();
+                else
+                    alert('Something went wrong!');
+            })
+            .catch(err => console.error(err))
+        }
     }
 
     const columns = [
