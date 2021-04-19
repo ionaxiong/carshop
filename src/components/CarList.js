@@ -17,7 +17,6 @@ function CarList() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
-  //function to open snackbar
   const openSnackbar = () => {
     setOpen(true);
   };
@@ -26,7 +25,6 @@ function CarList() {
     setOpen(false);
   };
 
-  //fetch car list
   useEffect(() => {
     fetchCars();
   }, []);
