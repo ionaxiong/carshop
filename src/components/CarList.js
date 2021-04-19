@@ -7,12 +7,26 @@ import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import Snackbar from '@material-ui/core/Snackbar';
+
 import AddCar from './AddCar';
 import EditCar from './EditCar';
 
 function CarList() {
   const [cars, setCars] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
+  //function to open snackbar
+  const openSnackbar = () => {
+    setOpen(true);
+  }
+
+  const closeSnackbar = () => {
+    setOpen(false);
+  }
+
+  //fetch car list
   useEffect(() => {
     fetchCars();
   }, []);
@@ -28,8 +42,13 @@ function CarList() {
     if (window.confirm("Are you sure?")) {
       fetch(url, { method: 'DELETE' })
         .then((response) => {
-          if (response.ok) fetchCars();
-          else alert("Something went wrong in deleting car!");
+          if (response.ok) {
+            openSnackbar();
+            fetchCars();
+          }
+          else {
+            alert("Something went wrong in deleting car!")
+          };
         })
         .catch((err) => console.error(err));
     }
@@ -105,6 +124,12 @@ function CarList() {
           suppressCellSelection={true}
         />
       </div>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        message={message}
+        onClose={closeSnackbar}
+        />
     </div>
   );
 }

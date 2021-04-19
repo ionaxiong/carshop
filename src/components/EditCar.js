@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,12 +7,10 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import Snackbar from '@material-ui/core/Snackbar';
 
 function EditCar(props) {
-  const [open, setOpen] = React.useState(false);
-  const [openSnack, setOpenSnack] = React.useState(false);
-  const [car, setCar] = React.useState({
+  const [open, setOpen] = useState(false);
+  const [car, setCar] = useState({
     brand: "",
     model: "",
     color: "",
