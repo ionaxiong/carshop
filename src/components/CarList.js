@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-material.css';
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-material.css";
 
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from "@material-ui/core/Snackbar";
 
-import AddCar from './AddCar';
-import EditCar from './EditCar';
+import AddCar from "./AddCar";
+import EditCar from "./EditCar";
 
 function CarList() {
   const [cars, setCars] = useState([]);
@@ -20,11 +20,11 @@ function CarList() {
   //function to open snackbar
   const openSnackbar = () => {
     setOpen(true);
-  }
+  };
 
   const closeSnackbar = () => {
     setOpen(false);
-  }
+  };
 
   //fetch car list
   useEffect(() => {
@@ -32,7 +32,7 @@ function CarList() {
   }, []);
 
   const fetchCars = () => {
-    fetch('https://carstockrest.herokuapp.com/cars')
+    fetch("https://carstockrest.herokuapp.com/cars")
       .then((response) => response.json())
       .then((data) => setCars(data._embedded.cars))
       .catch((err) => console.error(err));
@@ -40,50 +40,56 @@ function CarList() {
 
   const deleteCar = (url) => {
     if (window.confirm("Are you sure?")) {
-      fetch(url, { method: 'DELETE' })
+      fetch(url, { method: "DELETE" })
         .then((response) => {
           if (response.ok) {
+            setMessage("Car is deleted successfully!");
             openSnackbar();
             fetchCars();
+          } else {
+            alert("Something went wrong in deleting car!");
           }
-          else {
-            alert("Something went wrong in deleting car!")
-          };
         })
         .catch((err) => console.error(err));
     }
   };
 
   const addCar = (newCar) => {
-    fetch('https://carstockrest.herokuapp.com/cars', {
-        method: 'POST',
-        body: JSON.stringify(newCar),
-        headers: { 'Content-type': 'application/json' }
+    fetch("https://carstockrest.herokuapp.com/cars", {
+      method: "POST",
+      body: JSON.stringify(newCar),
+      headers: { "Content-type": "application/json" },
     })
-    .then(response => {
-        if (response.ok)
-            fetchCars();
-        else
-            alert('Something went wrong in adding car!')
-    })
-    .catch(err => console.error(err))
-  }
+      .then((response) => {
+        if (response.ok) {
+          setMessage('Car is added successfully!');
+          openSnackbar();
+          fetchCars();
+        } else {
+          alert("Something went wrong in adding car!");
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
   const editCar = (url, updatedCar) => {
     fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(updatedCar),
-      headers: { 'Content-type': 'application/json' }
+      headers: { "Content-type": "application/json" },
     })
-    .then(response => {
-      if (response.ok)
-        fetchCars();
-      else 
-        alert('Something went wrong in update!')
-    })
-    .catch(err => console.error(err))
-
-  }
+      .then((response) => {
+        if (response.ok) {
+          setMessage('Car is edited!');
+          openSnackbar();
+          fetchCars();
+        }
+        else {
+          alert("Something went wrong in update!");
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
   const columns = [
     { field: "brand", sortable: true, filter: true },
@@ -93,19 +99,22 @@ function CarList() {
     { field: "year", sortable: true, filter: true, width: 100 },
     { field: "price", sortable: true, filter: true, width: 100 },
     {
-      headerName: '',
+      headerName: "",
       width: 100,
-      field: '_links.self.href',
-      cellRendererFramework: params => <EditCar editCar={editCar} link={params.value} car={params.data} />
+      field: "_links.self.href",
+      cellRendererFramework: (params) => (
+        <EditCar editCar={editCar} link={params.value} car={params.data} />
+      ),
     },
     {
-      headerName: '',
+      headerName: "",
       width: 100,
-      field: '_links.self.href',
-      cellRendererFramework: params => 
+      field: "_links.self.href",
+      cellRendererFramework: (params) => (
         <IconButton color="secondary" onClick={() => deleteCar(params.value)}>
           <DeleteIcon />
         </IconButton>
+      ),
     },
   ];
 
@@ -129,7 +138,7 @@ function CarList() {
         autoHideDuration={3000}
         message={message}
         onClose={closeSnackbar}
-        />
+      />
     </div>
   );
 }
