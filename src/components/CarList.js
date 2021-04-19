@@ -40,6 +40,13 @@ function CarList() {
         body: JSON.stringify(newCar),
         headers: { 'Content-type': 'application/json' }
     })
+    .then(response => {
+        if (response.ok)
+            fetchCars();
+        else
+            alert('Something went wrong')
+    })
+    .catch(err => console.error(err))
   }
 
   const columns = [
@@ -63,7 +70,7 @@ function CarList() {
 
   return (
     <div>
-      <AddCar onClick={addCar} />
+      <AddCar addCar={addCar} />
       <div
         className="ag-theme-material"
         style={{ height: 600, width: "90%", margin: "auto" }}
