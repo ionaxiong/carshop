@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-material.css";
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-material.css';
 
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
-import AddCar from "./AddCar";
+import AddCar from './AddCar';
+import EditCar from './EditCar';
 
 function CarList() {
   const [cars, setCars] = useState([]);
@@ -28,7 +29,7 @@ function CarList() {
       fetch(url, { method: 'DELETE' })
         .then((response) => {
           if (response.ok) fetchCars();
-          else alert("Something went wrong!");
+          else alert("Something went wrong in deleting car!");
         })
         .catch((err) => console.error(err));
     }
@@ -44,9 +45,25 @@ function CarList() {
         if (response.ok)
             fetchCars();
         else
-            alert('Something went wrong')
+            alert('Something went wrong in adding car!')
     })
     .catch(err => console.error(err))
+  }
+
+  const editCar = (url, updatedCar) => {
+    fetch(url, {
+      method: 'PUT',
+      body: JSON.stringify(updatedCar),
+      headers: { 'Content-type': 'application/json' }
+    })
+    .then(response => {
+      if (response.ok)
+        fetchCars();
+      else 
+        alert('Something went wrong in update!')
+    })
+    .catch(err => console.error(err))
+
   }
 
   const columns = [
@@ -57,14 +74,19 @@ function CarList() {
     { field: "year", sortable: true, filter: true, width: 100 },
     { field: "price", sortable: true, filter: true, width: 100 },
     {
-      headerName: "",
+      headerName: '',
       width: 100,
-      field: "_links.self.href",
-      cellRendererFramework: (params) => (
+      field: '_links.self.href',
+      cellRendererFramework: params => <EditCar editCar={editCar} link={params.value} car={params.data} />
+    },
+    {
+      headerName: '',
+      width: 100,
+      field: '_links.self.href',
+      cellRendererFramework: params => 
         <IconButton color="secondary" onClick={() => deleteCar(params.value)}>
           <DeleteIcon />
         </IconButton>
-      ),
     },
   ];
 
