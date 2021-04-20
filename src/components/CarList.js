@@ -6,6 +6,7 @@ import "ag-grid-community/dist/styles/ag-theme-material.css";
 
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 import Snackbar from "@material-ui/core/Snackbar";
 
@@ -15,7 +16,22 @@ import EditCar from "./EditCar";
 function CarList() {
   const [cars, setCars] = useState([]);
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
+
+  // copy paste v
+  const [gridApi, setGridApi] = useState(null);
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
+  const onBtnExport = () => {
+    const params = {
+      columnKeys: ["brand", "model", "color", "fuel", "year", "price"],
+    };
+    gridApi.exportDataAsCsv(params);
+  };
+  // copy paste ^
 
   const openSnackbar = () => {
     setOpen(true);
@@ -60,7 +76,7 @@ function CarList() {
     })
       .then((response) => {
         if (response.ok) {
-          setMessage('Car is added successfully!');
+          setMessage("Car is added successfully!");
           openSnackbar();
           fetchCars();
         } else {
@@ -78,11 +94,10 @@ function CarList() {
     })
       .then((response) => {
         if (response.ok) {
-          setMessage('Car is edited!');
+          setMessage("Car is edited!");
           openSnackbar();
           fetchCars();
-        }
-        else {
+        } else {
           alert("Something went wrong in update!");
         }
       })
@@ -119,6 +134,14 @@ function CarList() {
   return (
     <div>
       <AddCar addCar={addCar} />
+      <div>
+        {/* copy paste v */}
+        <IconButton style={{ fontSize: 13, margin: 10}} size='medium' color='inherit' onClick={() => onBtnExport()}>
+          Download CSV
+          <GetAppIcon />
+        </IconButton>
+        {/* copy paste ^ */}
+      </div>
       <div
         className="ag-theme-material"
         style={{ height: 600, width: "90%", margin: "auto" }}
@@ -129,6 +152,9 @@ function CarList() {
           pagination={true}
           paginationPageSize={10}
           suppressCellSelection={true}
+          // copy paste v
+          onGridReady={onGridReady}
+          // copy paste ^
         />
       </div>
       <Snackbar
