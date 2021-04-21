@@ -18,7 +18,7 @@ function CarList() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
 
-  // copy paste v
+  // export v
   const [gridApi, setGridApi] = useState(null);
 
   const onGridReady = (params) => {
@@ -31,7 +31,7 @@ function CarList() {
     };
     gridApi.exportDataAsCsv(params);
   };
-  // copy paste ^
+  // export ^
 
   const openSnackbar = () => {
     setOpen(true);
@@ -135,12 +135,12 @@ function CarList() {
     <div>
       <AddCar addCar={addCar} />
       <div>
-        {/* copy paste v */}
+        {/* export v */}
         <IconButton style={{ fontSize: 13, margin: 10}} size='medium' color='inherit' onClick={() => onBtnExport()}>
           Download CSV
           <GetAppIcon />
         </IconButton>
-        {/* copy paste ^ */}
+        {/* export ^ */}
       </div>
       <div
         className="ag-theme-material"
@@ -152,9 +152,9 @@ function CarList() {
           pagination={true}
           paginationPageSize={10}
           suppressCellSelection={true}
-          // copy paste v
+          // export v
           onGridReady={onGridReady}
-          // copy paste ^
+          // export ^
         />
       </div>
       <Snackbar
